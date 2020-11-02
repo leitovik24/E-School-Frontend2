@@ -1,4 +1,5 @@
 package com.javamentor.view;
 
-public class MainView {
+public class MainView{
+
 }
