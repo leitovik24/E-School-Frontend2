@@ -1,4 +1,4 @@
-package com.javamentor.dto;
+package com.javamentor.dto.model;
 
 public class UserLogin {
     private String username;
