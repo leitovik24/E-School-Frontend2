@@ -21,7 +21,7 @@ public class TeacherService {
                     restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                             });
-            if (response.getStatusCodeValue() != 200) {
+        if (!response.getStatusCode().equals(HttpStatus.OK)) {
                 throw new RestClientException("Request error");
             }
         return response.getBody();
