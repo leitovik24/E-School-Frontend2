@@ -1,6 +1,6 @@
 package com.javamentor.view;
 
-import com.javamentor.domain.Teacher;
+import com.javamentor.domain.Student;
 import com.javamentor.service.StudentService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -12,7 +12,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @Theme(Lumo.class)
 public class StudentList extends VerticalLayout {
     private final StudentService service = new StudentService();
-    private final Grid<Teacher> grid = new Grid<>(Teacher.class);
+    private final Grid<Student> grid = new Grid<>(Student.class);
 
     public StudentList() {
         grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
