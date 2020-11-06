@@ -23,12 +23,7 @@ public class TeacherService {
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                             });
             if (response.getStatusCode().equals(HttpStatus.OK)) {
-                return Objects
-                        .requireNonNull(response.getBody())
-                        .stream()
-                        .filter(e -> e.getFirstName()
-                                .contains(filter))
-                        .collect(Collectors.toList());
+                return response.getBody();
             }
         }
         catch (Exception ignored) {
