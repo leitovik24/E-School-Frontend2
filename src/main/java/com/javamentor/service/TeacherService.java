@@ -28,9 +28,8 @@ public class TeacherService {
             if (response.getStatusCode().equals(HttpStatus.OK)) {
                 return response.getBody();
             }
-        } catch (RestClientResponseException e) {
-            LOGGER.log(Level.WARNING, "Error status code: {0} , Message: {1}",
-                    new String[]{String.valueOf(e.getRawStatusCode()), e.getMessage()});
+        } catch (HttpClientErrorException e) {
+            LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }
         return Collections.emptyList();
     }
