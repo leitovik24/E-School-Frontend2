@@ -15,15 +15,25 @@ import java.util.List;
 public class TeacherService {
     String URL = "http://localhost:8080/api/admin/teacher/teachers";
 
-    public List<Teacher> getAll() {
+    public List<Teacher> getAll(String filter) {
+        try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Teacher>> response =
                     restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                             });
-        if (!response.getStatusCode().equals(HttpStatus.OK)) {
-                throw new RestClientException("Request error");
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                return Objects
+                        .requireNonNull(response.getBody())
+                        .stream()
+                        .filter(e -> e.getFirstName()
+                                .contains(filter))
+                        .collect(Collectors.toList());
             }
-        return response.getBody();
+        }
+        catch (Exception ignored) {
+            // Exception
+        }
+        return Collections.emptyList();
     }
 }
