@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 @Service
 public class TeacherService {
     String URL = "http://localhost:8080/api/admin/teacher/teachers";
-    Logger LOGGER = Logger.getLogger("TeachersList");
+    Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
 
     public List<Teacher> getAll() {
         try {
