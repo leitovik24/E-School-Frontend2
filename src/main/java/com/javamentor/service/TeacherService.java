@@ -13,21 +13,17 @@ import java.util.List;
 
 @Service
 public class TeacherService {
+    String URL = "http://localhost:8080/api/admin/teacher/teachers";
 
     public List<Teacher> getAll() {
-        String URL = "http://localhost:8080/api/admin/teacher/teachers";
-        try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Teacher>> response =
                     restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                             });
-            if (response.getStatusCodeValue() == 200 && response.getBody() != null) {
-                return response.getBody();
+            if (response.getStatusCodeValue() != 200) {
+                throw new RestClientException("Request error");
             }
-        } catch (RestClientResponseException e) {
-            //           return ResponseEntity.status(e.getRawStatusCode()).body(e.getResponseBodyAsString());
-        }
-        return Collections.emptyList();
+        return response.getBody();
     }
 }
