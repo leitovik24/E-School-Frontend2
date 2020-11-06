@@ -1,6 +1,6 @@
 package com.javamentor.service;
 
-import com.javamentor.domain.Teacher;
+import com.javamentor.domain.Student;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -15,16 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-public class TeacherService {
-    String URL = "http://localhost:8080/api/admin/teacher/teachers";
-    Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
+public class StudentService {
+    String URL = "http://localhost:8080/api/admin/student/students";
+    Logger LOGGER = Logger.getLogger(StudentService.class.getName());
 
-    public List<Teacher> getAll() {
+    public List<Student> getAll() {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<List<Teacher>> response =
+            ResponseEntity<List<Student>> response =
                     restTemplate.exchange(URL,
-                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
+                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                             });
             if (response.getStatusCode().equals(HttpStatus.OK)) {
                 return response.getBody();
