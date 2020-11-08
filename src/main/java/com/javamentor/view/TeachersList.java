@@ -2,7 +2,6 @@ package com.javamentor.view;
 
 import com.javamentor.domain.Teacher;
 import com.javamentor.service.TeacherService;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -15,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Учителя")
 @Theme(Lumo.class)
 public class TeachersList extends VerticalLayout {
-    private TeacherService service;
+    private final TeacherService service;
     private final Grid<Teacher> grid = new Grid<>(Teacher.class);
 
     @Autowired

@@ -1,6 +1,5 @@
 package com.javamentor.view;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -52,9 +51,7 @@ public class MainView extends AppLayout {
         top.setAlignItems(FlexComponent.Alignment.CENTER);
         top.add(new H3("E-School"));
         Button logoutBtn = new Button("Logout");
-        logoutBtn.addClickListener(e -> {
-            Notification.show("Logout");
-        });
+        logoutBtn.addClickListener(e -> Notification.show("Logout"));
         top.add(logoutBtn);
 
         layout.setSizeFull();
@@ -66,9 +63,6 @@ public class MainView extends AppLayout {
         HorizontalLayout logoLayout = new HorizontalLayout();
         layout.add(logoLayout, menu);
         return layout;
-    }
-
-    private void logout(ClickEvent event) {
     }
 
     private Tabs createMenu() {

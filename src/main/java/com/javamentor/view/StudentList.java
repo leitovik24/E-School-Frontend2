@@ -2,7 +2,6 @@ package com.javamentor.view;
 
 import com.javamentor.domain.Student;
 import com.javamentor.service.StudentService;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
