@@ -22,7 +22,7 @@ public class TeachersList extends VerticalLayout {
     public TeachersList(TeacherService service) {
         this.service = service;
         grid.setVerticalScrollingEnabled(true);
-        grid.isHeightByRows();
+        grid.setHeightByRows(true);
         grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
         grid.getColumnByKey("email").setHeader("e-Mail");
         grid.getColumnByKey("firstName").setHeader("Имя");
