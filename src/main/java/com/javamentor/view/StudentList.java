@@ -22,7 +22,7 @@ public class StudentList extends Div {
     public StudentList(StudentService service) {
         this.service = service;
         grid.setVerticalScrollingEnabled(true);
-        grid.setHeight("800px");
+        grid.isHeightByRows();
         grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
         grid.getColumnByKey("email").setHeader("E-mail");
         grid.getColumnByKey("firstName").setHeader("Имя");
