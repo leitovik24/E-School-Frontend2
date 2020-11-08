@@ -21,7 +21,7 @@ public class StudentService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${rest.host}")
+    @Value("${rest.host}/api/admin/student/students")
     private String URL;
 
     @Autowired
@@ -34,7 +34,7 @@ public class StudentService {
     public List<Student> getAll() {
         try {
             ResponseEntity<List<Student>> response =
-                    restTemplate.exchange(URL + "/api/admin/student/students",
+                    restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                             });
             if (response.getStatusCode().equals(HttpStatus.OK)) {
