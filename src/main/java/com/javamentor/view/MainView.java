@@ -7,6 +7,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -50,7 +51,10 @@ public class MainView extends AppLayout {
         HorizontalLayout top = new HorizontalLayout();
         top.setAlignItems(FlexComponent.Alignment.CENTER);
         top.add(new H3("E-School"));
-        Button logoutBtn = new Button("Logout", this::logout);
+        Button logoutBtn = new Button("Logout");
+        logoutBtn.addClickListener(e -> {
+            Notification.show("Logout");
+        });
         top.add(logoutBtn);
 
         layout.setSizeFull();
@@ -77,7 +81,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[] {
+        return new Tab[]{
                 createTab("Студенты", StudentList.class),
                 createTab("Учителя", TeachersList.class)
         };

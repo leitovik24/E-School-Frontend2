@@ -2,6 +2,7 @@ package com.javamentor.view;
 
 import com.javamentor.domain.Student;
 import com.javamentor.service.StudentService;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
@@ -20,7 +21,8 @@ public class StudentList extends Div {
     @Autowired
     public StudentList(StudentService service) {
         this.service = service;
-        grid.setSizeFull();
+        grid.setVerticalScrollingEnabled(true);
+        grid.setHeight("800px");
         grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
         grid.getColumnByKey("email").setHeader("E-mail");
         grid.getColumnByKey("firstName").setHeader("Имя");
