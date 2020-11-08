@@ -7,14 +7,19 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "/admin/teacher")
 @Theme(Lumo.class)
 public class TeachersList extends VerticalLayout {
-    private final TeacherService service = new TeacherService();
+
+    private final TeacherService service;
+
     private final Grid<Teacher> grid = new Grid<>(Teacher.class);
 
-    public TeachersList() {
+    @Autowired
+    public TeachersList(TeacherService service) {
+        this.service = service;
         grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
         grid.getColumnByKey("email").setHeader("e-Mail");
         grid.getColumnByKey("firstName").setHeader("Имя");

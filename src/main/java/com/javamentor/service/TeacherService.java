@@ -1,6 +1,8 @@
 package com.javamentor.service;
 
 import com.javamentor.domain.Teacher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,14 +18,23 @@ import java.util.logging.Logger;
 
 @Service
 public class TeacherService {
-    String URL = "http://localhost:8080/api/admin/teacher/teachers";
+
+    private final RestTemplate restTemplate;
+
+    @Value("${rest.host}")
+    private String URL;
+
+    @Autowired
+    public TeacherService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
 
     public List<Teacher> getAll() {
         try {
-            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Teacher>> response =
-                    restTemplate.exchange(URL,
+                    restTemplate.exchange(URL + "/api/admin/teacher/teachers",
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                             });
             if (response.getStatusCode().equals(HttpStatus.OK)) {
