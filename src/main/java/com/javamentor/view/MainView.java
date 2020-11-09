@@ -18,10 +18,13 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 import java.util.Optional;
 
 @Route("/home")
+@Theme(Lumo.class)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
@@ -63,25 +66,6 @@ public class MainView extends AppLayout {
         layout.add(logoLayout, menu);
         return layout;
     }
-
-//    private Component createDrawerContent(Tabs menu) {
-//        VerticalLayout layout = new VerticalLayout();
-//        HorizontalLayout top = new HorizontalLayout();
-//        top.setAlignItems(FlexComponent.Alignment.CENTER);
-//        top.add(new H3("E-School"));
-//
-//        top.add(logoutBtn);
-//
-//        layout.setSizeFull();
-//        layout.setPadding(false);
-//        layout.setSpacing(false);
-//        layout.getThemeList().set("spacing-s", true);
-//        layout.add(top);
-//        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-//        HorizontalLayout logoLayout = new HorizontalLayout();
-//        layout.add(logoLayout, menu);
-//        return layout;
-//    }
 
     private Tabs createMenu() {
         final Tabs tabs = new Tabs();
