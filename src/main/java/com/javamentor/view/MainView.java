@@ -5,7 +5,8 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class MainView extends AppLayout {
 
     private final Tabs menu;
-    private H3 viewTitle;
+    private H5 viewTitle;
 
     public MainView() {
         setPrimarySection(Section.DRAWER);
@@ -39,32 +40,48 @@ public class MainView extends AppLayout {
         layout.getThemeList().set("dark", true);
         layout.setWidthFull();
         layout.setSpacing(false);
-        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         layout.add(new DrawerToggle());
-        viewTitle = new H3();
+        viewTitle = new H5();
         layout.add(viewTitle);
+        Button logoutBtn = new Button("Logout");
+        logoutBtn.addClickListener(e -> Notification.show("Logout"));
+        layout.add(logoutBtn);
         return layout;
     }
 
     private Component createDrawerContent(Tabs menu) {
         VerticalLayout layout = new VerticalLayout();
-        HorizontalLayout top = new HorizontalLayout();
-        top.setAlignItems(FlexComponent.Alignment.CENTER);
-        top.add(new H3("E-School"));
-        Button logoutBtn = new Button("Logout");
-        logoutBtn.addClickListener(e -> Notification.show("Logout"));
-        top.add(logoutBtn);
-
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
         layout.getThemeList().set("spacing-s", true);
-        layout.add(top);
         layout.setAlignItems(FlexComponent.Alignment.STRETCH);
         HorizontalLayout logoLayout = new HorizontalLayout();
+        logoLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        logoLayout.add(new H4("E-School"));
         layout.add(logoLayout, menu);
         return layout;
     }
+
+//    private Component createDrawerContent(Tabs menu) {
+//        VerticalLayout layout = new VerticalLayout();
+//        HorizontalLayout top = new HorizontalLayout();
+//        top.setAlignItems(FlexComponent.Alignment.CENTER);
+//        top.add(new H3("E-School"));
+//
+//        top.add(logoutBtn);
+//
+//        layout.setSizeFull();
+//        layout.setPadding(false);
+//        layout.setSpacing(false);
+//        layout.getThemeList().set("spacing-s", true);
+//        layout.add(top);
+//        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
+//        HorizontalLayout logoLayout = new HorizontalLayout();
+//        layout.add(logoLayout, menu);
+//        return layout;
+//    }
 
     private Tabs createMenu() {
         final Tabs tabs = new Tabs();
