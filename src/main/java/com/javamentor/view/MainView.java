@@ -6,6 +6,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -84,6 +85,7 @@ public class MainView extends AppLayout {
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
+        tab.addComponentAsFirst(VaadinIcon.ACADEMY_CAP.create());
         ComponentUtil.setData(tab, Class.class, navigationTarget);
         return tab;
     }
