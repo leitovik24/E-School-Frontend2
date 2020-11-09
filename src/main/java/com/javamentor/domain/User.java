@@ -1,5 +1,6 @@
 package com.javamentor.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class User {
@@ -20,7 +21,7 @@ public class User {
 
     Boolean enabled = true;
 
-    LocalDateTime registrationDate;
+    LocalDate registrationDate;
 
     public User(String email, String firstName, String lastName, String password, Boolean enabled, LocalDateTime registrationDate) {
         this.email = email;
@@ -28,7 +29,7 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.enabled = enabled;
-        this.registrationDate = registrationDate;
+        this.registrationDate = registrationDate.toLocalDate();
     }
 
     public User() {
@@ -82,12 +83,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public LocalDateTime getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
+        this.registrationDate = registrationDate.toLocalDate();
     }
 
 }
