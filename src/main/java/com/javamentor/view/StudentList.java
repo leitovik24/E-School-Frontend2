@@ -3,7 +3,7 @@ package com.javamentor.view;
 import com.javamentor.domain.Student;
 import com.javamentor.service.StudentService;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(value = "/admin/student", layout = MainView.class)
 @PageTitle("Студенты")
 @Theme(Lumo.class)
-public class StudentList extends Div {
+public class StudentList extends VerticalLayout {
     private final StudentService service;
     private final Grid<Student> grid = new Grid<>(Student.class);
 
@@ -29,7 +29,6 @@ public class StudentList extends Div {
         grid.getColumnByKey("password").setHeader("Пароль");
         grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
         add(grid);
-        setSizeFull();
         updateList();
     }
 
