@@ -22,11 +22,10 @@ public class TeachersList extends VerticalLayout {
         this.service = service;
         grid.setVerticalScrollingEnabled(true);
         grid.setHeightByRows(true);
-        grid.setColumns("email", "firstName", "lastName", "password", "registrationDate");
+        grid.setColumns("firstName", "lastName", "email", "registrationDate");
         grid.getColumnByKey("email").setHeader("E-mail");
         grid.getColumnByKey("firstName").setHeader("Имя");
         grid.getColumnByKey("lastName").setHeader("Фамилия");
-        grid.getColumnByKey("password").setHeader("Пароль");
         grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
         add(grid);
         updateList();
