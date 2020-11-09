@@ -17,14 +17,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-public class StudentService {
+public class StudentService{
 
     private final RestTemplate restTemplate;
 
     @Value("${rest.host}/api/admin/student/students")
     private String URL;
 
-    @Autowired
     public StudentService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }

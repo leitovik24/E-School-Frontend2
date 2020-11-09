@@ -14,12 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Студенты")
 @Theme(Lumo.class)
 public class StudentList extends VerticalLayout {
-    private final StudentService service;
     private final Grid<Student> grid = new Grid<>(Student.class);
 
-    @Autowired
-    public StudentList(StudentService service) {
-        this.service = service;
+    public StudentList(@Autowired StudentService service) {
         grid.setVerticalScrollingEnabled(true);
         grid.setHeightByRows(true);
         grid.setColumns("firstName", "lastName", "email", "registrationDate");
@@ -28,10 +25,10 @@ public class StudentList extends VerticalLayout {
         grid.getColumnByKey("lastName").setHeader("Фамилия");
         grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
         add(grid);
-        updateList();
+        updateList(service);
     }
 
-    public void updateList() {
+    public void updateList(StudentService service) {
         grid.setItems(service.getAll());
     }
 }
