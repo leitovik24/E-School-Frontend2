@@ -13,8 +13,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService{
@@ -30,14 +32,17 @@ public class StudentService{
 
     Logger LOGGER = Logger.getLogger(StudentService.class.getName());
 
-    public List<Student> getAll() {
+    public List<Student> getAll(String filter) {
         try {
             ResponseEntity<List<Student>> response =
                     restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                             });
             if (response.getStatusCode().equals(HttpStatus.OK)) {
-                return response.getBody();
+                return Objects.requireNonNull(response.getBody())
+                        .stream()
+                        .filter(e -> e.toString().contains(filter))
+                        .collect(Collectors.toList());
             }
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
