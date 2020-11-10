@@ -83,7 +83,7 @@ public class StudentList extends HorizontalLayout {
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Новый студент");
     }
 
     private void clearForm() {

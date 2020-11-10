@@ -33,6 +33,15 @@ public class TeacherService {
 
     Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
 
+    public void save(Teacher teacher) {
+        try {
+            ResponseEntity response =
+                    restTemplate.postForEntity(URL,teacher, Teacher.class);
+        } catch (HttpClientErrorException e) {
+            LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
+        }
+    }
+
     public List<Teacher> getAll(String filter) {
         try {
             ResponseEntity<List<Teacher>> response =
