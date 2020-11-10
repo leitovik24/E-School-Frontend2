@@ -15,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -60,12 +61,27 @@ public class TeachersList extends HorizontalLayout {
         form.add(createFormLayout());
         form.add(createButtonLayout());
         add(form);
-        binder.bindInstanceFields(this);
+        binder.forField(firstName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина имени 3 символа")
+                .bind(Teacher::getFirstName, Teacher::setFirstName);
+        binder.forField(lastName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина фамилии 3 символа")
+                .bind(Teacher::getLastName, Teacher::setLastName);
+        binder.forField(email).withValidator(new EmailValidator(
+                "Неверный формат электронной почты"))
+                .bind(Teacher::getEmail, Teacher::setEmail);
+        binder.forField(password).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина пароля 3 символа")
+                .bind(Teacher::getPassword, Teacher::setPassword);
         clearForm();
-
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            if ((!firstName.isEmpty()) && (!lastName.isEmpty()) && (!email.isEmpty())) {
+            if ((!firstName.isInvalid())
+                    && (!lastName.isInvalid())
+                    && (!email.isInvalid())) {
                 service.save(binder.getBean());
                 clearForm();
                 updateList(service);
@@ -88,7 +104,6 @@ public class TeachersList extends HorizontalLayout {
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
         formLayout.add(firstName, lastName, email, password);
         return formLayout;
     }

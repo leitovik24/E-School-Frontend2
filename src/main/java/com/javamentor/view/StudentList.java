@@ -15,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -60,9 +61,22 @@ public class StudentList extends HorizontalLayout {
         form.add(createFormLayout());
         form.add(createButtonLayout());
         add(form);
-        binder.bindInstanceFields(this);
+        binder.forField(firstName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина имени 3 символа")
+                .bind(Student::getFirstName, Student::setFirstName);
+        binder.forField(lastName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина фамилии 3 символа")
+                .bind(Student::getLastName, Student::setLastName);
+        binder.forField(email).withValidator(new EmailValidator(
+                "Неверный формат электронной почты"))
+                .bind(Student::getEmail, Student::setEmail);
+        binder.forField(password).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина пароля 3 символа")
+                .bind(Student::getPassword, Student::setPassword);
         clearForm();
-
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
             if ((!firstName.isEmpty()) && (!lastName.isEmpty()) && (!email.isEmpty())) {
