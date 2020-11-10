@@ -1,7 +1,6 @@
 package com.javamentor.service;
 
 import com.javamentor.domain.Student;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
-public class StudentService{
+public class StudentService {
 
     private final RestTemplate restTemplate;
 
@@ -31,6 +30,15 @@ public class StudentService{
     }
 
     Logger LOGGER = Logger.getLogger(StudentService.class.getName());
+
+    public void save(Student student) {
+        try {
+            ResponseEntity response =
+                    restTemplate.postForEntity(URL,student, Student.class);
+        } catch (HttpClientErrorException e) {
+            LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
+        }
+    }
 
     public List<Student> getAll(String filter) {
         try {
