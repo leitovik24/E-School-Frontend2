@@ -79,7 +79,9 @@ public class StudentList extends HorizontalLayout {
         clearForm();
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            if ((!firstName.isEmpty()) && (!lastName.isEmpty()) && (!email.isEmpty())) {
+            if ((!firstName.isInvalid())
+                    && (!lastName.isInvalid())
+                    && (!email.isInvalid())) {
                 service.save(binder.getBean());
                 clearForm();
                 updateList(service);
