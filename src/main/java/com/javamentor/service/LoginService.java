@@ -21,14 +21,14 @@ public class LoginService {
         this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<?> sendLogin(String name, String password, Boolean rememberMe) {
+    public ResponseEntity<String> sendLogin(String name, String password, Boolean rememberMe) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         UserLogin userLogin = new UserLogin(name, password, rememberMe);
         HttpEntity<UserLogin> requestBody = new HttpEntity<>(userLogin, headers);
         try {
-            return restTemplate.postForEntity(login_url, requestBody, UserLogin.class);
+            return restTemplate.postForEntity(login_url, requestBody, String.class);
         } catch (HttpStatusCodeException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getResponseBodyAsString());
         }
