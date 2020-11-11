@@ -16,7 +16,6 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
@@ -37,6 +36,7 @@ public class StudentList extends HorizontalLayout {
 
     private final Button cancel = new Button("Отмена");
     private final Button save = new Button("Сохранить");
+    private final Button search = new Button("Поиск");
 
     private final Binder<Student> binder = new Binder(Student.class);
 
@@ -51,9 +51,9 @@ public class StudentList extends HorizontalLayout {
         grid.getColumnByKey("firstName").setHeader("Имя");
         grid.getColumnByKey("lastName").setHeader("Фамилия");
         grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
-        filterText.setValueChangeMode(ValueChangeMode.EAGER);
-        filterText.addValueChangeListener(e -> updateList(service));
-        vl.add(filterText, grid);
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.add(filterText, search);
+        vl.add(hl, grid);
         add(vl);
         VerticalLayout form = new VerticalLayout();
         form.setMaxWidth(20, Unit.PERCENTAGE);
@@ -85,12 +85,12 @@ public class StudentList extends HorizontalLayout {
                 service.save(binder.getBean());
                 clearForm();
                 updateList(service);
-            }
-            else {
+            } else {
                 Notification.show("Введите все данные");
             }
 
         });
+        search.addClickListener(e -> updateList(service));
         updateList(service);
     }
 

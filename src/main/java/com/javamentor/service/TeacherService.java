@@ -10,13 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 public class TeacherService {
@@ -36,23 +35,26 @@ public class TeacherService {
     public void save(Teacher teacher) {
         try {
             ResponseEntity response =
-                    restTemplate.postForEntity(URL,teacher, Teacher.class);
+                    restTemplate.postForEntity(URL, teacher, Teacher.class);
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }
     }
 
-    public List<Teacher> getAll(String filter) {
+    public List<Teacher> getAll(String search) {
         try {
-            ResponseEntity<List<Teacher>> response =
-                    restTemplate.exchange(URL,
-                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
-                            });
+            UriComponentsBuilder uriBuilder =
+                    UriComponentsBuilder.fromHttpUrl(URL)
+                            .queryParam("search", search);
+            ResponseEntity<List<Teacher>> response = restTemplate.exchange(
+                    uriBuilder.toUriString(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Teacher>>() {
+                    }
+            );
             if (response.getStatusCode().equals(HttpStatus.OK)) {
-                return Objects.requireNonNull(response.getBody())
-                        .stream()
-                        .filter(e -> e.toString().contains(filter))
-                        .collect(Collectors.toList());
+                return response.getBody();
             }
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());

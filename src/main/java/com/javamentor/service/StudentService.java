@@ -9,20 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${rest.host}/api/admin/student/students")
+    @Value("${rest.host}/api/admin/student/students/")
     private String URL;
 
     public StudentService(RestTemplate restTemplate) {
@@ -34,23 +33,41 @@ public class StudentService {
     public void save(Student student) {
         try {
             ResponseEntity response =
-                    restTemplate.postForEntity(URL,student, Student.class);
+                    restTemplate.postForEntity(URL, student, Student.class);
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }
     }
 
-    public List<Student> getAll(String filter) {
+    public List<Student> searchList(String search) {
         try {
             ResponseEntity<List<Student>> response =
                     restTemplate.exchange(URL,
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
-                            });
+                            }, search);
             if (response.getStatusCode().equals(HttpStatus.OK)) {
-                return Objects.requireNonNull(response.getBody())
-                        .stream()
-                        .filter(e -> e.toString().contains(filter))
-                        .collect(Collectors.toList());
+                return response.getBody();
+            }
+        } catch (HttpClientErrorException e) {
+            LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Student> getAll(String search) {
+        try {
+            UriComponentsBuilder uriBuilder =
+                    UriComponentsBuilder.fromHttpUrl(URL)
+                            .queryParam("search", search);
+            ResponseEntity<List<Student>> response = restTemplate.exchange(
+                    uriBuilder.toUriString(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Student>>() {
+                    }
+            );
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                return response.getBody();
             }
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
