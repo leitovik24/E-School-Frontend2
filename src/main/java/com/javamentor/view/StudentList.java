@@ -22,7 +22,7 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "/admin/student", layout = MainView.class)
+@Route(value = "/admin/students", layout = MainView.class)
 @PageTitle("Студенты")
 @Theme(Lumo.class)
 public class StudentList extends HorizontalLayout {
@@ -93,6 +93,7 @@ public class StudentList extends HorizontalLayout {
         search.addClickListener(e -> updateList(service));
         updateList(service);
     }
+
 
     public void updateList(StudentService service) {
         grid.setItems(service.getAll(filterText.getValue()));
