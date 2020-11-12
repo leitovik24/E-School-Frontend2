@@ -1,6 +1,7 @@
 package com.javamentor.view.login;
 
 import com.javamentor.service.LoginService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -35,11 +36,12 @@ public class LoginView extends VerticalLayout {
         loginForm.setI18n(loginI18n);
 
         loginForm.addLoginListener(event -> {
-            ResponseEntity responseEntity = loginService.sendLogin(event.getUsername(), event.getPassword(), rememberMe);
-            if (responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST) {
-                Notification.show("Вы аутентифицированны");
+            ResponseEntity<String> responseEntity = loginService.sendLogin(event.getUsername(), event.getPassword(), rememberMe);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                UI.getCurrent().getPage().executeJs("localStorage.setItem('token', $0)", responseEntity.getBody());
+                Notification.show("Вы авторизованны");
             } else {
-                loginI18n.getErrorMessage().setMessage(responseEntity.getBody().toString());
+                loginI18n.getErrorMessage().setMessage(responseEntity.getBody());
                 loginForm.setI18n(loginI18n);
                 loginForm.setError(true);
             }
@@ -50,11 +52,7 @@ public class LoginView extends VerticalLayout {
         });
 
         checkbox.addValueChangeListener(event -> {
-            if (event.getValue()) {
-                rememberMe = true;
-            } else {
-                rememberMe = false;
-            }
+            rememberMe = event.getValue();
         });
 
         add(new H1("Онлайн Школа"), loginForm, checkbox);
@@ -73,5 +71,4 @@ public class LoginView extends VerticalLayout {
         i18n.getErrorMessage().setTitle("Неверное имя пользователя / пароль");
         return i18n;
     }
-
 }
