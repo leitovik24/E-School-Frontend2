@@ -10,13 +10,4 @@ public class Student extends User {
 
     public Student() {
     }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "'" + email + '\'' +
-                "'" + firstName + '\'' +
-                "'" + lastName + '\'' +
-                '}';
-    }
 }

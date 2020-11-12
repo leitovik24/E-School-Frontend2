@@ -10,13 +10,4 @@ public class Teacher extends User {
 
     public Teacher() {
     }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "'" + email + '\'' +
-                "'" + firstName + '\'' +
-                "'" + lastName + '\'' +
-                '}';
-    }
 }
