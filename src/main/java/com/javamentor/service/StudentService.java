@@ -6,7 +6,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,13 +40,11 @@ public class StudentService {
     public List<Student> getAll(String search) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("search", search);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         try {
-            UriComponentsBuilder uriBuilder =
-                    UriComponentsBuilder.fromHttpUrl(URL)
-                            .queryParam("search", search);
             ResponseEntity<Student[]> response = restTemplate.exchange(
-                    uriBuilder.toUriString(),
+                    URL,
                     HttpMethod.GET,
                     httpEntity,
                     Student[].class
