@@ -2,6 +2,7 @@ package com.javamentor.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -45,7 +46,10 @@ public class MainView extends AppLayout {
         layout.add(new DrawerToggle());
         layout.add(new H4("E-School"));
         Button logoutBtn = new Button("Logout");
-        logoutBtn.addClickListener(e -> Notification.show("Logout"));
+        logoutBtn.addClickListener(e -> {
+            UI.getCurrent().getPage().executeJs("localStorage.removeItem('token')");
+            UI.getCurrent().navigate("login");
+        });
         layout.add(logoutBtn);
         return layout;
     }
