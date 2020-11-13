@@ -30,10 +30,10 @@ public class TeacherService {
 
     Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
 
-    public void save(Teacher teacher) {
+    public void saveNewTeacher(Teacher teacher) {
         try {
             ResponseEntity response =
-                    restTemplate.postForEntity(URL, teacher, Teacher.class);
+                    restTemplate.postForEntity(URL, null, Teacher.class);
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }

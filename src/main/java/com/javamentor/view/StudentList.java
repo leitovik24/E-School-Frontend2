@@ -41,7 +41,7 @@ public class StudentList extends HorizontalLayout {
     private final Binder<Student> binder = new Binder(Student.class);
 
     public StudentList(@Autowired StudentService service) {
-        VerticalLayout vl = new VerticalLayout();
+        VerticalLayout verticalLayout = new VerticalLayout();
         filterText.setPlaceholder("Поиск...");
         filterText.setClearButtonVisible(true);
         grid.setVerticalScrollingEnabled(true);
@@ -51,10 +51,10 @@ public class StudentList extends HorizontalLayout {
         grid.getColumnByKey("firstName").setHeader("Имя");
         grid.getColumnByKey("lastName").setHeader("Фамилия");
         grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
-        HorizontalLayout hl = new HorizontalLayout();
-        hl.add(filterText, search);
-        vl.add(hl, grid);
-        add(vl);
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(filterText, search);
+        verticalLayout.add(horizontalLayout, grid);
+        add(verticalLayout);
         VerticalLayout form = new VerticalLayout();
         form.setMaxWidth(20, Unit.PERCENTAGE);
         form.add(createTitle());
@@ -82,7 +82,7 @@ public class StudentList extends HorizontalLayout {
             if ((!firstName.isInvalid())
                     && (!lastName.isInvalid())
                     && (!email.isInvalid())) {
-                service.save(binder.getBean());
+                service.saveNewStudent(binder.getBean());
                 clearForm();
                 updateList(service);
             } else {
