@@ -29,7 +29,7 @@ public class AuthService {
      * @param token - JWT token для проверки
      * @param roles - Роли для проверки
      */
-    public ResponseEntity<?> checkTokenAndRole(String token, String roles){
+    public boolean checkTokenAndRole(String token, String roles){
 
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> tokenAndUrl = new HashMap<>();
@@ -38,10 +38,12 @@ public class AuthService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, String>> requestBody = new HttpEntity<>(tokenAndUrl, headers);
         try {
-            return restTemplate.postForEntity(url + "/api/auth/check-token", requestBody, Boolean.class);
+            boolean result = restTemplate.postForEntity(url + "/api/auth/check-token", requestBody, Boolean.class).getBody();
+            return result;
         } catch (HttpStatusCodeException exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getResponseBodyAsString());
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getResponseBodyAsString());
         }
+        return false;
 
     }
 }
