@@ -33,7 +33,7 @@ public class TeacherService {
     public void saveNewTeacher(Teacher teacher) {
         try {
             ResponseEntity response =
-                    restTemplate.postForEntity(URL, null, Teacher.class);
+                    restTemplate.postForEntity(URL, teacher, HttpStatus.class);
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }

@@ -31,7 +31,7 @@ public class StudentService {
     public void saveNewStudent(Student student) {
         try {
             ResponseEntity<?> response =
-                    restTemplate.postForEntity(URL, null, Student.class);
+                    restTemplate.postForEntity(URL, student, HttpStatus.class);
         } catch (HttpClientErrorException e) {
             LOGGER.log(Level.WARNING, e.getResponseBodyAsString());
         }
