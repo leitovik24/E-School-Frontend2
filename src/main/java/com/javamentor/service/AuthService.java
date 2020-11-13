@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class AuthService {
 
-    @Value("${auth.service.url}")
+    @Value("${rest.host}")
     private String url;
 
     private final RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class AuthService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, String>> requestBody = new HttpEntity<>(tokenAndUrl, headers);
         try {
-            return restTemplate.postForEntity(url, requestBody, Boolean.class);
+            return restTemplate.postForEntity(url + "/api/auth/check-token", requestBody, Boolean.class);
         } catch (HttpStatusCodeException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getResponseBodyAsString());
         }
