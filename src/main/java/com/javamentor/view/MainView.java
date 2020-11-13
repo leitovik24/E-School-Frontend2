@@ -28,11 +28,9 @@ import java.util.Optional;
 public class MainView extends AppLayout {
 
     private final Tabs menu;
-    private H5 viewTitle;
 
     public MainView() {
-        setPrimarySection(Section.DRAWER);
-        addToNavbar(true, createHeaderContent());
+       addToNavbar(createHeaderContent());
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
     }
@@ -45,8 +43,7 @@ public class MainView extends AppLayout {
         layout.setSpacing(false);
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         layout.add(new DrawerToggle());
-        viewTitle = new H5();
-        layout.add(viewTitle);
+        layout.add(new H4("E-School"));
         Button logoutBtn = new Button("Logout");
         logoutBtn.addClickListener(e -> Notification.show("Logout"));
         layout.add(logoutBtn);
@@ -56,14 +53,9 @@ public class MainView extends AppLayout {
     private Component createDrawerContent(Tabs menu) {
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
         layout.getThemeList().set("spacing-s", true);
         layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        HorizontalLayout logoLayout = new HorizontalLayout();
-        logoLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        logoLayout.add(new H4("E-School"));
-        layout.add(logoLayout, menu);
+        layout.add(menu);
         return layout;
     }
 
@@ -95,7 +87,6 @@ public class MainView extends AppLayout {
     protected void afterNavigation() {
         super.afterNavigation();
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
-        viewTitle.setText(getCurrentPageTitle());
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
@@ -105,7 +96,4 @@ public class MainView extends AppLayout {
                 .findFirst().map(Tab.class::cast);
     }
 
-    private String getCurrentPageTitle() {
-        return getContent().getClass().getAnnotation(PageTitle.class).value();
-    }
 }
