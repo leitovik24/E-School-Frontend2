@@ -3,6 +3,7 @@ package com.javamentor.view;
 import com.javamentor.domain.Student;
 import com.javamentor.domain.StudentClass;
 import com.javamentor.service.StudentClassService;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -25,81 +26,45 @@ public class StudentClassList extends HorizontalLayout {
      * @param studentClassService - Сервис, для получения данных с сервера
      */
     public StudentClassList(@Autowired StudentClassService studentClassService){
-        List<StudentClass> studentClass = studentClassService.getAllStudentClass();
+        List<StudentClass> studentClasses = studentClassService.getAllStudentClass();
 
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setAlignItems(Alignment.STRETCH);
 
-        for(StudentClass sc : studentClass){
+        studentClasses.forEach(studentClass -> {
+            List<Student> students = studentClassService.getAllStudentsOfStudentClassById(studentClass.getId());
+
             HorizontalLayout layout = new HorizontalLayout();
-            List<Student> students = studentClassService.getAllStudentsOfStudentClassById(sc.getId());
+            layout.add(printTableStudents(students));
 
-            Grid<Student> grid = new Grid<>(Student.class);
-            grid.setItems(students);
-            grid.setVerticalScrollingEnabled(true);
-            grid.setHeightByRows(true);
-            grid.setColumns("firstName", "lastName", "email", "registrationDate");
-            grid.getColumnByKey("email").setHeader("E-mail");
-            grid.getColumnByKey("firstName").setHeader("Имя");
-            grid.getColumnByKey("lastName").setHeader("Фамилия");
-            grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
-            layout.add(grid);
+            System.out.println(studentClass.getClassLevel().getNumberClass().getClass());
 
-            Details details = new Details(parseStringClassLevelToNumber(sc.getClassLevel().getNumberClass()) + " " + sc.getSymbolClass(),
-                     layout);
+            Details details = new Details(studentClass.getClassLevel().getNumberClass().ordinal() + 1 + " " + studentClass.getSymbolClass(),
+                    layout);
+
             verticalLayout.add(details);
-        }
+        });
 
         add(verticalLayout);
     }
 
     /**
-     * Метод превода номера класса из строки в число
-     * @param classLevel - Номер класса, пришедший с сервера
-     * @return - Номер класса, в виде числа
+     * Метод построения таблицы студентов
+     * @param students - Список студентов
+     * @return - компонент "таблица"
      */
-    public int parseStringClassLevelToNumber(String classLevel){
-        int result = 0;
+    public Component printTableStudents(List<Student> students){
+        Grid<Student> grid = new Grid<>(Student.class);
+        grid.setItems(students);
+        grid.setVerticalScrollingEnabled(true);
+        grid.setHeightByRows(true);
+        grid.setColumns("firstName", "lastName", "email", "registrationDate");
+        grid.getColumnByKey("email").setHeader("E-mail");
+        grid.getColumnByKey("firstName").setHeader("Имя");
+        grid.getColumnByKey("lastName").setHeader("Фамилия");
+        grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
 
-        switch (classLevel){
-            case ("ПЕРВЫЙ") :
-                result = 1;
-                break;
-            case ("ВТОРОЙ") :
-                result = 2;
-                break;
-            case ("ТРЕТИЙ") :
-                result = 3;
-                break;
-            case ("ЧЕТВЕРТЫЙ") :
-                result = 4;
-                break;
-            case ("ПЯТЫЙ") :
-                result = 5;
-                break;
-            case ("ШЕСТОЙ") :
-                result = 6;
-                break;
-            case ("СЕДЬМОЙ") :
-                result = 7;
-                break;
-            case ("ВОСЬМОЙ") :
-                result = 8;
-                break;
-            case ("ДЕВЯТЫЙ") :
-                result = 9;
-                break;
-            case ("ДЕСЯТЫЙ") :
-                result = 10;
-                break;
-            case ("ОДИНАДЦАТЫЙ") :
-                result = 11;
-                break;
-            case ("ДВЕНАДЦАТЫЙ") :
-                result = 12;
-                break;
-        }
-        return result;
+        return grid;
     }
 
 }

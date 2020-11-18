@@ -3,9 +3,9 @@ package com.javamentor.domain;
 public class ClassLevel {
 
     private Long id;
-    private String numberClass;
+    private NumberClass numberClass;
 
-    public ClassLevel(Long id, String numberClass) {
+    public ClassLevel(Long id, NumberClass numberClass) {
         this.id = id;
         this.numberClass = numberClass;
     }
@@ -21,11 +21,11 @@ public class ClassLevel {
         this.id = id;
     }
 
-    public String getNumberClass() {
+    public NumberClass getNumberClass() {
         return numberClass;
     }
 
-    public void setNumberClass(String numberClass) {
+    public void setNumberClass(NumberClass numberClass) {
         this.numberClass = numberClass;
     }
 }
