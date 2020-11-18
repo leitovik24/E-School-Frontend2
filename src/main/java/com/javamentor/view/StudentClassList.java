@@ -54,7 +54,7 @@ public class StudentClassList extends HorizontalLayout {
     }
 
     /**
-     * Метод вывода списка классов с учениками
+     * Метод превода номера класса из строки в число
      * @param classLevel - Номер класса, пришедший с сервера
      * @return - Номер класса, в виде числа
      */
