@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Студенты")
 @Theme(Lumo.class)
 public class StudentList extends HorizontalLayout {
+
     private final TextField filterText = new TextField();
     private final Grid<Student> grid = new Grid<>(Student.class);
 
@@ -41,41 +42,11 @@ public class StudentList extends HorizontalLayout {
     private final Binder<Student> binder = new Binder(Student.class);
 
     public StudentList(@Autowired StudentService service) {
-        VerticalLayout verticalLayout = new VerticalLayout();
-        filterText.setPlaceholder("Поиск...");
-        filterText.setClearButtonVisible(true);
-        grid.setVerticalScrollingEnabled(true);
-        grid.setHeightByRows(true);
-        grid.setColumns("firstName", "lastName", "email", "registrationDate");
-        grid.getColumnByKey("email").setHeader("E-mail");
-        grid.getColumnByKey("firstName").setHeader("Имя");
-        grid.getColumnByKey("lastName").setHeader("Фамилия");
-        grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(filterText, search);
-        verticalLayout.add(horizontalLayout, grid);
-        add(verticalLayout);
-        VerticalLayout form = new VerticalLayout();
-        form.setMaxWidth(20, Unit.PERCENTAGE);
-        form.add(createTitle());
-        form.add(createFormLayout());
-        form.add(createButtonLayout());
-        add(form);
-        binder.forField(firstName).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина имени 3 символа")
-                .bind(Student::getFirstName, Student::setFirstName);
-        binder.forField(lastName).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина фамилии 3 символа")
-                .bind(Student::getLastName, Student::setLastName);
-        binder.forField(email).withValidator(new EmailValidator(
-                "Неверный формат электронной почты"))
-                .bind(Student::getEmail, Student::setEmail);
-        binder.forField(password).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина пароля 3 символа")
-                .bind(Student::getPassword, Student::setPassword);
+        creatingLayouts();
+        createTextFilters();
+        fillGrid();
+        createForm();
+        createBinder();
         clearForm();
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
@@ -97,6 +68,56 @@ public class StudentList extends HorizontalLayout {
 
     public void updateList(StudentService service) {
         grid.setItems(service.getAll(filterText.getValue()));
+    }
+
+
+    private void creatingLayouts(){
+        VerticalLayout verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(filterText, search);
+        verticalLayout.add(horizontalLayout, grid);
+        add(verticalLayout);
+    }
+    private void createBinder(){
+        binder.forField(firstName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина имени 3 символа")
+                .bind(Student::getFirstName, Student::setFirstName);
+        binder.forField(lastName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина фамилии 3 символа")
+                .bind(Student::getLastName, Student::setLastName);
+        binder.forField(email).withValidator(new EmailValidator(
+                "Неверный формат электронной почты"))
+                .bind(Student::getEmail, Student::setEmail);
+        binder.forField(password).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина пароля 3 символа")
+                .bind(Student::getPassword, Student::setPassword);
+    }
+
+    private void createTextFilters(){
+        filterText.setPlaceholder("Поиск...");
+        filterText.setClearButtonVisible(true);
+    }
+
+    private void fillGrid(){
+        grid.setVerticalScrollingEnabled(true);
+        grid.setHeightByRows(true);
+        grid.setColumns("firstName", "lastName", "email", "registrationDate");
+        grid.getColumnByKey("email").setHeader("E-mail");
+        grid.getColumnByKey("firstName").setHeader("Имя");
+        grid.getColumnByKey("lastName").setHeader("Фамилия");
+        grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
+    }
+
+    private void createForm(){
+        VerticalLayout form = new VerticalLayout();
+        form.setMaxWidth(20, Unit.PERCENTAGE);
+        form.add(createTitle());
+        form.add(createFormLayout());
+        form.add(createButtonLayout());
+        add(form);
     }
 
     private Component createTitle() {

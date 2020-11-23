@@ -41,41 +41,11 @@ public class TeachersList extends HorizontalLayout {
     private final Binder<Teacher> binder = new Binder(Teacher.class);
 
     public TeachersList(@Autowired TeacherService service) {
-        VerticalLayout verticalLayout = new VerticalLayout();
-        filterText.setPlaceholder("Поиск...");
-        filterText.setClearButtonVisible(true);
-        grid.setVerticalScrollingEnabled(true);
-        grid.setHeightByRows(true);
-        grid.setColumns("firstName", "lastName", "email", "registrationDate");
-        grid.getColumnByKey("email").setHeader("E-mail");
-        grid.getColumnByKey("firstName").setHeader("Имя");
-        grid.getColumnByKey("lastName").setHeader("Фамилия");
-        grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(filterText, search);
-        verticalLayout.add(horizontalLayout, grid);
-        add(verticalLayout);
-        VerticalLayout form = new VerticalLayout();
-        form.setMaxWidth(20, Unit.PERCENTAGE);
-        form.add(createTitle());
-        form.add(createFormLayout());
-        form.add(createButtonLayout());
-        add(form);
-        binder.forField(firstName).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина имени 3 символа")
-                .bind(Teacher::getFirstName, Teacher::setFirstName);
-        binder.forField(lastName).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина фамилии 3 символа")
-                .bind(Teacher::getLastName, Teacher::setLastName);
-        binder.forField(email).withValidator(new EmailValidator(
-                "Неверный формат электронной почты"))
-                .bind(Teacher::getEmail, Teacher::setEmail);
-        binder.forField(password).withValidator(
-                name -> name.length() >= 3,
-                "Минимальная длина пароля 3 символа")
-                .bind(Teacher::getPassword, Teacher::setPassword);
+        creatingLayouts();
+        createFilter();
+        fillGrid();
+        creatingForm();
+        createBinder();
         clearForm();
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
@@ -94,8 +64,57 @@ public class TeachersList extends HorizontalLayout {
         updateList(service);
     }
 
+
     private Component createTitle() {
         return new H3("Новый преподаватель");
+    }
+
+    private void createFilter(){
+        filterText.setPlaceholder("Поиск...");
+        filterText.setClearButtonVisible(true);
+    }
+    private void createBinder(){
+        binder.forField(firstName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина имени 3 символа")
+                .bind(Teacher::getFirstName, Teacher::setFirstName);
+        binder.forField(lastName).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина фамилии 3 символа")
+                .bind(Teacher::getLastName, Teacher::setLastName);
+        binder.forField(email).withValidator(new EmailValidator(
+                "Неверный формат электронной почты"))
+                .bind(Teacher::getEmail, Teacher::setEmail);
+        binder.forField(password).withValidator(
+                name -> name.length() >= 3,
+                "Минимальная длина пароля 3 символа")
+                .bind(Teacher::getPassword, Teacher::setPassword);
+    }
+
+    private void fillGrid(){
+        grid.setVerticalScrollingEnabled(true);
+        grid.setHeightByRows(true);
+        grid.setColumns("firstName", "lastName", "email", "registrationDate");
+        grid.getColumnByKey("email").setHeader("E-mail");
+        grid.getColumnByKey("firstName").setHeader("Имя");
+        grid.getColumnByKey("lastName").setHeader("Фамилия");
+        grid.getColumnByKey("registrationDate").setHeader("Дата регистрации");
+    }
+
+    private void creatingForm(){
+        VerticalLayout form = new VerticalLayout();
+        form.setMaxWidth(20, Unit.PERCENTAGE);
+        form.add(createTitle());
+        form.add(createFormLayout());
+        form.add(createButtonLayout());
+        add(form);
+    }
+    private void creatingLayouts(){
+        VerticalLayout verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(filterText, search);
+        verticalLayout.add(horizontalLayout, grid);
+        add(verticalLayout);
     }
 
     private void clearForm() {
